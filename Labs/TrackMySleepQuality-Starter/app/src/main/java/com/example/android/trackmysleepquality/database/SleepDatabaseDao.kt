@@ -31,22 +31,23 @@ interface SleepDatabaseDao{
     //   INSERT INTO daily_slee?quality_table(nightId, start_time_milli, end_time_milli, quality_rating)
     //   VALEUS (night.nightId, night.startTimeMilli, night.endTimeMilli, night.sleep...)
     @Insert
-    fun insert(night: SleepNight)
+    suspend fun insert(night: SleepNight)
+
+    // suspend == takes a certain time until the result comes == acync
 
     @Update
-    fun update(night: SleepNight)
+    suspend fun update(night: SleepNight)
 
     @Query("SELECT * from daily_sleep_quality_table WHERE nightId = :key")
-    fun get(key: Long): SleepNight?
+    suspend fun get(key: Long): SleepNight?
 
     @Query("SELECT * from daily_sleep_quality_table ORDER BY nightId")
-    fun getTonight(): SleepNight?
+    suspend fun getTonight(): SleepNight?
 
     @Query("SELECT * from daily_sleep_quality_table ORDER BY nightId DESC")
-    fun getAllNight(): LiveData<List<SleepNight>>
-
+    fun getAllNights(): LiveData<List<SleepNight>>
 
     // delete everything from the database
     @Query("DELETE FROM daily_sleep_quality_table")
-    fun clear()
+    suspend fun clear()
 }
